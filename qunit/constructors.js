@@ -2,9 +2,25 @@ QUnit.test("Dummy test - see that QUnit is working", function( assert ) {
     assert.ok( 1 == "1", "Passed!" );
 });
 
-QUnit.test("create ProductConfiguratorJS (the engine) object", function( assert ) {
+QUnit.test("create empty ProductConfiguratorJS object", function( assert ) {
     assert.expect( 3 );
-    var engine = new ProductConfiguratorJS();
+    var engine = new ProductConfiguratorJS(null, {});
+    assert.ok( engine !== null, "Created ProductConfiguratorJS Engine OK" );
+    assert.equal( typeof engine, 'object', 'It is an object');
+    assert.ok( engine.ok(), 'Check that engine is created ok' );
+});
+
+QUnit.test("create ProductConfiguratorJS object from model", function( assert ) {
+    assert.expect( 3 );
+    var engine = new ProductConfiguratorJS(null, testingModel());
+    assert.ok( engine !== null, "Created ProductConfiguratorJS Engine OK" );
+    assert.equal( typeof engine, 'object', 'It is an object');
+    assert.ok( engine.ok(), 'Check that engine is created ok' );
+});
+
+QUnit.test("create ProductConfiguratorJS object from model with DIV location", function( assert ) {
+    assert.expect( 3 );
+    var engine = new ProductConfiguratorJS('testing-area', testingModel());
     assert.ok( engine !== null, "Created ProductConfiguratorJS Engine OK" );
     assert.equal( typeof engine, 'object', 'It is an object');
     assert.ok( engine.ok(), 'Check that engine is created ok' );
