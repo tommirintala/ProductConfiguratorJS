@@ -65,14 +65,19 @@ QUnit.test("Engine: load model", function( assert ) {
 QUnit.module('Helper functions');
 QUnit.test('ProductConfiguratorJS helper functions', function( assert ) {
     var engine = new ProductConfiguratorJS('test-div', testingModel());
-    var parent = engine.findById(0x200);
+    var parent = engine.findById(0x40);
     assert.equal(parent.label, 'parent', 'findById() Find parent element starting from root');
-    var child = engine.findById(0x202, parent);
+    var child = engine.findById(0x402, parent);
     assert.equal(child.label, 'child2', 'findById() find child by starting from parent');
+
+    
+});
+QUnit.test("testing isValidChange() - function", function(assert) {
+    var engine = new ProductConfiguratorJS('test-div', testingModel());
     var broken = {};
     assert.ok (!engine.isValidChange(broken), "Checking failure of empty change object");
     // ------------
-    broken.id = 0x200; // set id
+    broken.id = 0x40; // set id
     assert.ok (!engine.isValidChange(broken), "Checking failure of broken change object (1)");
     // ------------
     broken.newValue = "valid string";    
@@ -82,11 +87,33 @@ QUnit.test('ProductConfiguratorJS helper functions', function( assert ) {
     assert.ok (engine.isValidChange(broken), "Fixed the change object");
     
     var change = {
-	id: 0x200,
+	id: 0x40,
 	oldValue: false,
 	newValue: true
     };
     assert.ok( engine.isValidChange( change ), "Checking that we have a valid change object");
+});
+
+QUnit.test("countNodes() -function", function(assert) {
+    var engine = new ProductConfiguratorJS('test-div', testingModel());
+    assert.ok(engine.ok());
+    assert.equal(typeof engine.countNodes, 'function', 'check that countNodes() -function exists');
+
+    assert.equal(engine.countNodes(), 8, 'calculate the nodes in the model');
+});
+
+QUnit.test("travel() -function", function(assert) {
+    var engine = new ProductConfiguratorJS('test-div', testingModel());
+    assert.ok(engine.ok);
+    
+    assert.expect(engine.countNodes());
+    
+    engine.travel( this._model, function() { ok(true, "ok"); });
+    
+    //engine.travel(this._model, function(data) {
+    //console.log(" called with: " + JSON.stringify(data));
+    //});
+    
 });
 
 QUnit.module('ProductConfiguratorJS Events');
@@ -101,7 +128,7 @@ QUnit.test( "Change something, and test for the events", function( assert ) {
     assert.expect(1);
 
     var event = {
-	id: 0x200,
+	id: 0x40,
 	event: 'enabled',
 	oldValue: true,
 	newValue: false
@@ -187,4 +214,15 @@ QUnit.module("Order");
 QUnit.test("Order object constructor test", function(assert) {
     var order = new ProductConfiguratorOrder();
     assert.equal(typeof order, 'object', "Check that creation creates a object");
+});
+
+QUnit.module("HTML");
+QUnit.test("Test the form output", function(assert) {
+    var engine = new ProductConfiguratorJS('testdiv', testingModel());
+    assert.ok( engine.ok(), "testing ok");
+    assert.ok( engine.validateModel(), 'check that model is ok');
+
+
+    var output = engine.getForm();
+    assert.equal(output, "html", "test form output");
 });
