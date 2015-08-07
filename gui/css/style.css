@@ -1,0 +1,13 @@
+html {
+    background-color: #fff;
+}
+
+body {
+    background-color: #f0f0f0;
+    margin: 12px;
+}
+
+form {
+    background-color: #cfcfcf;
+    border: solid 1px #000;
+}
