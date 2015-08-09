@@ -1,0 +1,2 @@
+# ProductConfiguratorJS
+Simple Product Configurator
